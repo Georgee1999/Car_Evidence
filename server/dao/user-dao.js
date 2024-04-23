@@ -17,8 +17,23 @@ function create(user) {
     }
   }
 
+  // Method to list users in a folder
+function list() {
+    try {
+      const files = fs.readdirSync(userFolderPath);
+      const userList = files.map((file) => {
+        const fileData = fs.readFileSync(path.join(userFolderPath, file), "utf8");
+        return JSON.parse(fileData);
+      });
+      return userList;
+    } catch (error) {
+      throw { code: "failedToListUsers", message: error.message };
+    }
+  }
+
   module.exports = {
-    create
+    create,
+    list
   };
 
 
