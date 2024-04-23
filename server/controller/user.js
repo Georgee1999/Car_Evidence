@@ -5,8 +5,14 @@ const router = express.Router(); // umožňuje definovat cesty (routes) a jejich
 // Modul abl (který pravděpodobně znamená "Application Business Logic") obsahuje logiku, která se spustí, když uživatel pošle požadavek na vytvoření nového uživatele. Místo .. znamená, že cesta k souboru začíná
 // v nadřazeném adresáři aktuálního umístění souboru controlleru.
 const CreateAbl = require("../abl/user/createAbl");
+const ListAbl = require("../abl/user/listAbl");
+
 
 // Jako druhý argument přijímá funkci, která má být zavolána, když server obdrží POST požadavek na tuto URL. 
 // CreateAbl je tedy funkce, která obsahuje logiku pro zpracování tohoto požadavku.
 // například vytvoření nového uživatele v systému.
 router.post("/create", CreateAbl);
+router.get("/list", ListAbl);
+
+module.exports = router;
+

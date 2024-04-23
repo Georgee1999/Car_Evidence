@@ -7,7 +7,7 @@ const userFolderPath = path.join(__dirname, "storage", "userList"); // __dirname
 // Method to write an user to a file
 function create(user) {
     try {
-      user.id = crypto.randomBytes(16).toString("hex");
+      user.id = crypto.randomBytes(5).toString("hex");
       const filePath = path.join(userFolderPath, `${user.id}.json`);
       const fileData = JSON.stringify(user);
       fs.writeFileSync(filePath, fileData, "utf8");
