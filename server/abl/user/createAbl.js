@@ -10,10 +10,11 @@ const schema = {
   properties: {
     email: { type: "string", format: "email" },
     firstName: { type: "string", minLength: 2 },
-    lastName: {type: "string", minLength: 2}
+    lastName: {type: "string", minLength: 2},
+    address: {type: "string", minLength: 5}
   },
-  required: ["email", "firstName", "lastName"],
-  additionalProperties: false,//žádné další vlastnosti nejsou povoleny 
+  required: ["email", "firstName", "lastName","address"],
+  additionalProperties: false, //žádné další vlastnosti nejsou povoleny 
 };
 
 async function CreateAbl(req, res) {
