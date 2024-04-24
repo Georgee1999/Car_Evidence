@@ -32,7 +32,6 @@ async function GetAbl(req, res) {
     
     // read user by given id
     const user = userDao.getUserCars(reqParams.id);
- 
     
     if (!user) {
       res.status(404).json({
