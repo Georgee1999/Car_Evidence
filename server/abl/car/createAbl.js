@@ -4,6 +4,7 @@ const ajv = new Ajv();
 addFormats(ajv);
 
 const carDao = require("../../dao/car-dao.js"); 
+const userDao = require("../../dao/user-dao.js"); 
 
 const schema = {
     type: "object",
@@ -35,6 +36,18 @@ const schema = {
   
       const carList = carDao.list();
       const carExists = carList.some((c) => c.SPZ === car.SPZ); 
+      const userList = userDao.list();
+      const emailExist = userList.some((u) => u.email === car.email);
+
+    
+
+      if(!emailExist){
+        res.status(400).json({
+          code: "userEmailNotExist",
+          message: `User with email ${car.email} does not exist`,
+        });
+        return;
+      }
       if (carExists) {
         res.status(400).json({
           code: "carAlreadyExists",
@@ -44,10 +57,12 @@ const schema = {
       }
   
       car = carDao.create(car);
-      res.json(car);
+      res.status(201).json(car);
     } catch (e) {
       res.status(500).json({ message: e.message });
       console.log(e);
     }
   }
   module.exports = CreateAbl;
+
+  

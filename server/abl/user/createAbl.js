@@ -43,7 +43,7 @@ async function CreateAbl(req, res) {
       }
   
       user = userDao.create(user);
-      res.json(user);
+      res.status(201).json(user);
     } catch (e) {
       res.status(500).json({ message: e.message });
     }

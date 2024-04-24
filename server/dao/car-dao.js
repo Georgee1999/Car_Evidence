@@ -10,7 +10,7 @@ const carFolderPath = path.join(__dirname, "storage", "carList");
 function create(car) {
     try {
       car.id = crypto.randomBytes(5).toString("hex");
-      const filePath = path.join(carFolderPath, `${car.id}.json`);
+      const filePath = path.join(carFolderPath, `${car.SPZ}.json`);
       const fileData = JSON.stringify(car);
       fs.writeFileSync(filePath, fileData, "utf8");
       return car;
@@ -33,7 +33,22 @@ function list() {
   }
 }
 
+function remove(car) {
+  try {
+    const filePath = path.join(carFolderPath, `${car}.json`);
+    fs.unlinkSync(filePath);
+    return {};
+  } catch (error) {
+    console.log(error);
+    if (error.code === "ENOENT") {
+      return {};
+    }
+    throw { code: "failedToRemoveCar", message: error.message };
+  }
+}
+
   module.exports = {
     create,
-    list
+    list,
+    remove
   }
