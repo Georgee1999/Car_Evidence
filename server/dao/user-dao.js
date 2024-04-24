@@ -17,6 +17,17 @@ function create(user) {
     }
   }
 
+  function getUserCars(userId){
+    try {
+      const filePath = path.join(userFolderPath, `${userId}.json`);
+      const fileData = fs.readFileSync(filePath, "utf8");
+      return JSON.parse(fileData);
+    } catch (error) {
+      if (error.code === "ENOENT") return null;
+      throw { code: "failedToReadUser", message: error.message };
+    }
+  }
+
   // Method to list users in a folder
 function list() {
     try {
@@ -33,7 +44,8 @@ function list() {
 
   module.exports = {
     create,
-    list
+    list,
+    getUserCars
   };
 
 

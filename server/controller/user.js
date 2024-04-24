@@ -6,6 +6,7 @@ const router = express.Router(); // umožňuje definovat cesty (routes) a jejich
 // v nadřazeném adresáři aktuálního umístění souboru controlleru.
 const CreateAbl = require("../abl/user/createAbl");
 const ListAbl = require("../abl/user/listAbl");
+const getUserCars = require("../abl/user/getUsersCarsAbl");
 
 
 // Jako druhý argument přijímá funkci, která má být zavolána, když server obdrží POST požadavek na tuto URL. 
@@ -13,6 +14,7 @@ const ListAbl = require("../abl/user/listAbl");
 // například vytvoření nového uživatele v systému.
 router.post("/create", CreateAbl);
 router.get("/list", ListAbl);
+router.get("/get", getUserCars);
 
 module.exports = router;
 
