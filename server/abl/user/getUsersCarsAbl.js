@@ -6,7 +6,7 @@ const userDao = require("../../dao/user-dao.js");
 const schema = {
   type: "object",
   properties: {
-    id: { type: "string", minLength: 8, maxLength: 32 },
+    id: { type: "string", minLength: 5, maxLength: 20 },
   },
   required: ["id"],
   additionalProperties: false,
@@ -24,7 +24,7 @@ async function GetAbl(req, res) {
     if (!valid) {
       res.status(400).json({
         code: "dtoInIsNotValid",
-        message: "dtoIn is not valid",
+        message: "Nesprávně vyplněnné údaje",
         validationError: ajv.errors,
       });
       return;
@@ -36,13 +36,22 @@ async function GetAbl(req, res) {
     if (!user) {
       res.status(404).json({
         code: "userNotFound",
-        message: `User ${reqParams.id} not found`,
+        message: `Uživatel s id: ${reqParams.id} nenalezen.`,
       });
       return;
     }
 
     const cars =  carDao.list(); 
     const userCars = cars.filter(car => car.email === user.email);
+
+   console.log(userCars.length);
+   if(userCars.length === 0){
+    res.json({
+      code: "userDontHaveAnyCars",
+      message: `Uživatel nemá přiřazené žádné auto`,
+    });
+    return;
+  }
     
 
     res.json(userCars);

@@ -9,11 +9,11 @@ const userDao = require("../../dao/user-dao.js");
 const schema = {
     type: "object",
     properties: {
-      SPZ: { type: "string", minLength: 6},
+      SPZ: { type: "string", minLength: 5, maxLength: 8},
       model: { type: "string", minLength: 3 },
       yearOfMade: {type: "string", minLength: 4},
       color: {type: "string"},
-      email: {type: "string", minLength: 5}
+      email: {type: "string", minLength: 5, format: "email"}
     },
     required: ["SPZ", "model", "yearOfMade","email"],
     additionalProperties: false, //žádné další vlastnosti nejsou povoleny 

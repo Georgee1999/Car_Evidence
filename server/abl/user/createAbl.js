@@ -34,10 +34,11 @@ async function CreateAbl(req, res) {
   
       const userList = userDao.list();//Voláte metodu list z userDao, která vrací seznam všech uživatelů.
       const emailExists = userList.some((u) => u.email === user.email); //Používáte metodu some na seznamu uživatelů k zjištění, zda již existuje uživatel se stejným emailem.
+      
       if (emailExists) {
         res.status(400).json({
           code: "emailAlreadyExists",
-          message: `User with email ${user.email} already exists`,
+          message: `Uživatel s tímto e-mailem: ${user.email} již existuje`,
         });
         return;
       }
