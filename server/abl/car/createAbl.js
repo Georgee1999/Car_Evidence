@@ -21,10 +21,10 @@ const schema = {
 
   async function CreateAbl(req, res) {
     try {
-      let car = req.body; //Získáváte tělo požadavku (tj. data odeslaná klientem) a ukládáte je do proměnné car
+      let car = req.body; 
   
       // validate input
-      const valid = ajv.validate(schema, car);////Voláte metodu validate na instanci AJV, kterou jste dříve nakonfigurovali s pomocí schema a objektu user. Tato metoda zkontroluje, zda data uživatele odpovídají schématu.
+      const valid = ajv.validate(schema, car); 
       if (!valid) {
         res.status(400).json({
           code: "dtoInIsNotValid",
@@ -44,14 +44,14 @@ const schema = {
       if(!emailExist){
         res.status(400).json({
           code: "userEmailNotExist",
-          message: `User with email ${car.email} does not exist`,
+          message: `Uživatel s tímto e-mailem ${car.email} neexistuje.`,
         });
         return;
       }
       if (carExists) {
         res.status(400).json({
           code: "carAlreadyExists",
-          message: `Car with SPZ ${car.SPZ} already exists`,
+          message: `Vozidlo s SPZ ${car.SPZ} již existuje.`,
         });
         return;
       }

@@ -9,7 +9,6 @@ const carFolderPath = path.join(__dirname, "storage", "carList");
 // Method to write an car to a file
 function create(car) {
     try {
-     // car.id = crypto.randomBytes(5).toString("hex");
       const filePath = path.join(carFolderPath, `${car.SPZ}.json`);
       const fileData = JSON.stringify(car);
       fs.writeFileSync(filePath, fileData, "utf8");

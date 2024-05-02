@@ -16,10 +16,8 @@ async function GetAbl(req, res) {
   try {
     const carDao = require("../../dao/car-dao.js");
 
-    // get request query or body
     const reqParams = req.body;
 
-    // validate input
     const valid = ajv.validate(schema, reqParams);
     if (!valid) {
       res.status(400).json({
@@ -30,7 +28,6 @@ async function GetAbl(req, res) {
       return;
     }
     
-    // read user by given id
     const user = userDao.getUserCars(reqParams.id);
     
     if (!user) {

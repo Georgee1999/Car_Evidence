@@ -2,7 +2,6 @@ const Ajv = require("ajv");
 const ajv = new Ajv();
 
 const carDao = require("../../dao/car-dao.js");
-//const attendanceDao = require("../../dao/attendance-dao.js");
 
 const schema = {
   type: "object",
@@ -15,10 +14,8 @@ const schema = {
 
 async function DeleteAbl(req, res) {
   try {
-    // get request query or body
     const reqParams = req.body;
 
-    // validate input
     const valid = ajv.validate(schema, reqParams);
     if (!valid) {
       res.status(400).json({

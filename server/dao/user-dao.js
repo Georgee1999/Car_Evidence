@@ -1,6 +1,6 @@
-const fs = require("fs"); // můžete číst ze souborů, zapisovat do souborů, mazat soubory atd.
-const path = require("path"); // pro práci s cestami k souborům.
-const crypto = require("crypto"); // používá pro generování unikátních identifikátorů pro uživatele pomocí crypto.randomBytes. Metoda randomBytes generuje kryptograficky silnou posloupnost náhodných bytů (v tomto případě 16 bytů), které jsou pak převedeny na řetězec ve šestnáctkovém formátu pomocí toString("hex").
+const fs = require("fs"); 
+const path = require("path"); 
+const crypto = require("crypto"); 
 
 const userFolderPath = path.join(__dirname, "storage", "userList"); // __dirname = obsahuje absolutní cestu k adresáři, kde se nachází aktuálně vykonávaný soubor
 

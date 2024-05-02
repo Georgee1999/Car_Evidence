@@ -1,6 +1,6 @@
-const Ajv = require("ajv"); //  AJV, což je validátor JSON schémat pro Node.js a prohlížeče, který umožňuje ověřit, že JSON data splňují určitá kritéria definovaná ve schématu.
-const addFormats = require("ajv-formats").default; //Formáty mohou být například "email", "uuid", "date-time" apod. Díky tomu můžete v JSON schématech používat tato klíčová slova a validátor bude rozumět jejich formátu.
-const ajv = new Ajv(); //Zde vytváříte novou instanci validátoru AJV pomocí konstruktoru, který jste naimportovali v prvním řádku. To vám umožňuje začít definovat JSON schémata a provádět validace.
+const Ajv = require("ajv");
+const addFormats = require("ajv-formats").default; 
+const ajv = new Ajv();
 addFormats(ajv);
 
 const userDao = require("../../dao/user-dao.js"); //obsahuje metody pro manipulaci s uživatelskými daty, jako je vytváření nových uživatelů a jejich výpis.
@@ -19,10 +19,10 @@ const schema = {
 
 async function CreateAbl(req, res) {
     try {
-      let user = req.body; //Získáváte tělo požadavku (tj. data odeslaná klientem) a ukládáte je do proměnné user
+      let user = req.body; 
   
       // validate input
-      const valid = ajv.validate(schema, user);////Voláte metodu validate na instanci AJV, kterou jste dříve nakonfigurovali s pomocí schema a objektu user. Tato metoda zkontroluje, zda data uživatele odpovídají schématu.
+      const valid = ajv.validate(schema, user);// Tato metoda zkontroluje, zda data uživatele odpovídají schématu.
       if (!valid) {
         res.status(400).json({
           code: "dtoInIsNotValid",
