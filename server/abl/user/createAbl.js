@@ -26,7 +26,7 @@ async function CreateAbl(req, res) {
       if (!valid) {
         res.status(400).json({
           code: "dtoInIsNotValid",
-          message: "Nesprávně vyplněnné údaje",
+          message: "Nesprávně vyplněné údaje",
           validationError: ajv.errors,
         });
         return;

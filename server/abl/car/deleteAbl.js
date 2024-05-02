@@ -23,7 +23,7 @@ async function DeleteAbl(req, res) {
     if (!valid) {
       res.status(400).json({
         code: "dtoInIsNotValid",
-        message: "dtoIn is not valid",
+        message: "Nesprávně vyplněné údaje",
         validationError: ajv.errors,
       });
       return;
@@ -35,11 +35,12 @@ async function DeleteAbl(req, res) {
     if(carExists){
         carDao.remove(reqParams.SPZ);
         res.status(200).json({
-            message:`Car with SPZ: ${reqParams.SPZ} was deleted`
+            message:`Auto s SPZ: ${reqParams.SPZ} bylo odstraněno.`
         });
     }else{
         res.json({
-            message: `Car with SPZ: ${reqParams.SPZ} does not exist.`
+            code: "carDoesNotExist",
+            message: `Auto s SPZ: ${reqParams.SPZ} neexistuje.`
         })
     }
 
