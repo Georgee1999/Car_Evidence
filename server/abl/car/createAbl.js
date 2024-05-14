@@ -31,6 +31,7 @@ const schema = {
           message: "Nesprávně vyplněné údaje",
           validationError: ajv.errors,
         });
+        
         return;
       }
   
