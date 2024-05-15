@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { useNavigate, Outlet } from "react-router-dom";
 import RegistrationForm from "./User/RegistrationForm"; 
+import LoginForm from "./User/LoginForm";
 import NavBar from "./NavBar";
 
 import {
@@ -17,7 +18,9 @@ import {
 const Layout = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
   const [userName, setUserName] = useState(""); // Nový stav pro jméno uživatele
+  const [userId, setUserId] = useState(""); // Nový stav pro ID uživatele
   const navigate = useNavigate();
 
 
@@ -25,7 +28,8 @@ const Layout = () => {
 
 
 
-  const openModal = () => {
+  const openModal = (content) => {
+    setModalContent(content)
     setModalIsOpen(true);
   };
 
@@ -33,44 +37,59 @@ const Layout = () => {
     setModalIsOpen(false);
   };
 
-  const handleRegistrationSuccess = (name) => {
+  const handleRegistrationSuccess = (name, id) => {
     setIsLoggedIn(true);
     setUserName(name); // Nastavení jména uživatele po úspěšné registraci
+    setUserId(id); // Nastavení ID uživatele po úspěšné registraci
     navigate("/dashboard"); // Přesměrování na Dashboard po úspěšné registraci
+    closeModal();
+  };
+  const handleLoginSuccess = (user) => {
+    setIsLoggedIn(true);
+    setUserName(`${user.firstName} ${user.lastName}`);
+    setUserId(user.id);
+    navigate("/dashboard");
     closeModal();
   };
 
   const onLogout = () => {
     setIsLoggedIn(false);  // Nastaví isLoggedIn na false
     setUserName(""); // Vyprázdnění jména uživatele po odhlášení
+    setUserId("");
     navigate("/");         // Přesměrování na úvodní stránku
   };
 
 
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} onLogout={onLogout} userName={userName} />
+    <NavBar isLoggedIn={isLoggedIn} onLogout={onLogout} userName={userName} />
       <div style={mainContainerStyle}>
         <div style={bodyStyle}>
           {!isLoggedIn ? (
             <>
-              <button onClick={() => {}} style={buttonStyle}>Přihlásit se</button>
-              <button onClick={openModal} style={buttonStyle}>Registrovat</button>
+              <button onClick={() => openModal("login")} style={buttonStyle}>Přihlásit se</button>
+              <button onClick={() => openModal("register")} style={buttonStyle}>Registrovat</button>
             </>
           ) : (
-            // Pokud je uživatel přihlášen
-            <div><Outlet /></div>
+            <div><Outlet context={[userId]} /></div>
           )}
-          <Modal 
+           <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
-            contentLabel="Registration Form"
+            contentLabel="Modal"
             style={registrationPopup}
           >
-            <RegistrationForm
-              onClose={closeModal}
-              onRegisterSuccess={(name) => handleRegistrationSuccess(name)}
-            />
+            {modalContent === "register" ? (
+              <RegistrationForm
+                onClose={closeModal}
+                onRegisterSuccess={handleRegistrationSuccess}
+              />
+            ) : (
+              <LoginForm
+                onClose={closeModal}
+                onLoginSuccess={handleLoginSuccess}
+              />
+            )}
           </Modal>
         </div>
         <div className="card-footer text-light" style={footerStyle}>

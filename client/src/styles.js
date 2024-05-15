@@ -1,26 +1,50 @@
+export const mainContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "20px",
+};
+
+export const bodyStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+};
+export const buttonContainerStyle = {
+  display: "flex",
+  justifyContent: "center",
+  marginBottom: "20px",
+};
 export const buttonStyle = {
-  backgroundColor: "#A9A9A9",
-  border: "none",
-  color: "black",
-  padding: "10px 50px",
-  textAlign: "center",
-  textDecoration: "none",
-  display: "inline-block",
-  fontSize: "16px",
-  margin: "10px 20px", 
-  cursor: "pointer",
-  borderRadius: "10px",
-};
-
-export const inputStyle = {
-  padding: "10px",
-  margin: "0 0 10px 0",
-  borderRadius: "5px",
-  border: "1px solid #ddd",
-  backgroundColor: "#222",
+  backgroundColor: "#6c757d",
   color: "white",
+  padding: "10px 20px",
+  margin: "5px",
+  border: "none",
+  borderRadius: "5px",
+  cursor: "pointer",
+  fontSize: "16px",
+  transition: "background-color 0.3s ease-in-out",
 };
 
+export const buttonHoverStyle = {
+  backgroundColor: "#5a6268",
+};
+
+
+// FORM
+export const registrationForm = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+  backgroundColor: "#2c2c2c",
+  padding: "20px",
+  borderRadius: "8px",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+  width: "300px",
+};
 export const formButtonStyle = {
   backgroundColor: "#0066ff",
   color: "white",
@@ -29,8 +53,20 @@ export const formButtonStyle = {
   borderRadius: "5px",
   cursor: "pointer",
   margin: "10px 0",
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  transition: "background-color 0.3s ease",
 };
-
+export const inputStyle = {
+  padding: "10px",
+  margin: "0 0 10px 0",
+  borderRadius: "5px",
+  border: "1px solid #ddd",
+  backgroundColor: "#222",
+  color: "white",
+  fontSize: "14px",
+  outline: "none",
+};
 export const registrationPopup = {
   content: {
     top: "50%",
@@ -39,47 +75,48 @@ export const registrationPopup = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#333", // Tmavé pozadí
-    color: "#fff", // Bílý text
-    borderRadius: "10px", // Zaoblené rohy
-    padding: "20px", // Vnější odsazení
-    border: "1px solid #555", // Hraniční link
+    backgroundColor: "#333",
+    color: "#fff",
+    borderRadius: "10px",
+    padding: "20px",
+    border: "1px solid #555",
   },
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.75)", // Tmavý overlay
+    backgroundColor: "rgba(0, 0, 0, 0.75)",
   },
 };
 
-export const mainContainerStyle = {
+// CAR CARD
+export const carContainerStyle = {
   display: "flex",
-  flexDirection: "column",
-  height: "100vh", // Použijeme pevnou výšku pro viewport
-  justifyContent: "space-between", // Rozloží obsah mezi začátek a konec kontejneru
-  alignItems: "center",
-  margin: 0,
-  padding: 0
-}
-
-export const bodyStyle = {
-  flex: 1, // Allows the body to expand and fill available space
-  display: 'flex',
-  flexDirection: 'column', // Aligns children elements in a column
-  justifyContent: 'center', // Center content vertically in the middle of the page
-  alignItems: 'center', // Center content horizontally
-  padding: '20px', // Provides padding inside the body
-  overflow: 'hidden' // Prevents any content from overflowing
+  flexWrap: "wrap",
+  justifyContent: "center",
+};
+export const carCardStyle = {
+  padding: "20px",
+  borderRadius: "10px",
+  border: "1px solid #ddd",
+  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+  backgroundColor: "#fff",
+  margin: "10px",
+  minWidth: "250px",
+  textAlign: "left",
+  transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+  //cursor: "pointer",
+};
+export const carCardHoverStyle = {
+  transform: "scale(1.05)",
+  boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
 };
 
+// FOOTER
 export const footerStyle = {
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  padding: "8px 0",
   textAlign: "center",
   backgroundColor: "#696969",
   color: "white",
-  width: "100%"
-}
-
-
+  width: "100%",
+  padding: "8px 0",
+  position: "fixed",
+  bottom: 0,
+  left: 0,
+};

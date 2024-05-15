@@ -1,4 +1,3 @@
-
 import Navbar from "react-bootstrap/Navbar";
 
 import Container from "react-bootstrap/Container";
@@ -8,20 +7,27 @@ import { mdiCar } from "@mdi/js";
 import Button from "react-bootstrap/esm/Button";
 
 function NavBar({ isLoggedIn, onLogout, userName }) {
-
   return (
     <Navbar expand="lg" style={componentStyle()}>
-      <Container style={{display:'flex', justifyContent:'space-between', width:'100%'}}>
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
         <Button onClick={onLogout} style={buttonStyle()}>
           <Icon path={mdiCar} size={1} color={"white"} />
           <span style={textStyle()}>Evidence Aut</span>
         </Button>
-        { isLoggedIn &&(
+        {isLoggedIn && (
           <>
-          <span style={{ color: "white", marginRight: "20px" }}>Vítej {userName}</span>
-          <button onClick={onLogout}  style={logoutButtonStyle()}>
-            Odhlásit se
-          </button>
+            <span style={welcomeStyle()}>
+              Vítej {userName}
+            </span>
+            <button onClick={onLogout} style={logoutButtonStyle()}>
+              Odhlásit se
+            </button>
           </>
         )}
       </Container>
@@ -51,6 +57,17 @@ function buttonStyle() {
   };
 }
 
+
+function welcomeStyle() {
+  return {
+    color: "#f0ad4e",
+    marginRight: "20px",
+    marginTop:"7px",
+    fontSize: "18px",
+    fontWeight: "bold",
+    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
+  };
+}
 function componentStyle() {
   return {
     backgroundColor: "#696969", //backround of navbar
@@ -61,12 +78,14 @@ function componentStyle() {
 
 function logoutButtonStyle() {
   return {
-    backgroundColor: "#dc3545", // Tlačítko pro odhlášení může mít varovný červený styl
+    backgroundColor: "#dc3545", // varovný červený styl
     color: "white",
     padding: "10px 20px",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+    transition: "background-color 0.3s ease",
+    fontSize: "15px",
   };
 }
 export default NavBar;
