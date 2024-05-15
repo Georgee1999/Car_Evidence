@@ -28,6 +28,23 @@ function create(user) {
     }
   }
 
+  function getUserByEmail(email) {
+    try {
+      const files = fs.readdirSync(userFolderPath);
+      for (const file of files) {
+        const filePath = path.join(userFolderPath, file);
+        const fileData = fs.readFileSync(filePath, "utf8");
+        const user = JSON.parse(fileData);
+        if (user.email === email) {
+          return user;
+        }
+      }
+      return null;
+    } catch (error) {
+      throw { code: "failedToReadUser", message: error.message };
+    }
+  }
+
   // Method to list users in a folder
 function list() {
     try {
@@ -42,10 +59,13 @@ function list() {
     }
   }
 
+
+
   module.exports = {
     create,
     list,
-    getUserCars
+    getUserCars,
+    getUserByEmail
   };
 
 

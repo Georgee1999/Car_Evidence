@@ -9,7 +9,7 @@ const userDao = require("../../dao/user-dao.js");
 const schema = {
     type: "object",
     properties: {
-      SPZ: { type: "string", minLength: 5, maxLength: 8},
+      SPZ: { type: "string", minLength: 6, maxLength: 8},
       model: { type: "string", minLength: 3 },
       yearOfMade: {type: "string", minLength: 4},
       color: {type: "string"},

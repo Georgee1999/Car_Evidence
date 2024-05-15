@@ -11,7 +11,7 @@ const schema = {
     email: { type: "string", format: "email" },
     firstName: { type: "string", minLength: 2 },
     lastName: {type: "string", minLength: 2},
-    address: {type: "string", minLength: 5}
+    address: {type: "string", minLength: 4}
   },
   required: ["email", "firstName", "lastName","address"],
   additionalProperties: false, //žádné další vlastnosti nejsou povoleny 

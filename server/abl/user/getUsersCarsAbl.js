@@ -16,7 +16,7 @@ async function GetAbl(req, res) {
   try {
     const carDao = require("../../dao/car-dao.js");
 
-    const reqParams = req.body;
+    const reqParams = { id: req.query.id };
 
     const valid = ajv.validate(schema, reqParams);
     if (!valid) {
