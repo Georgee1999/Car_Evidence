@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { formButtonStyle, inputStyle, registrationForm } from "../styles";
-import { createCar } from "../api";
+import { formButtonStyle, inputStyle, registrationForm } from "../../styles/styles";
+import { createCar } from "../../api/api";
 
 function AddCarForm({ onClose, onAddCarSuccess }) {
   const [SPZ, setSpz] = useState("");
@@ -10,17 +10,10 @@ function AddCarForm({ onClose, onAddCarSuccess }) {
   const [email, setEmail] = useState("");
 
   const [message, setMessage] = useState(""); // Stav pro zprávu
-  const [showMessage, setShowMessage] = useState(false);
 
-  const [spzError, setSpzError] = useState(""); // Stav pro chybovou zprávu SPZ
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (SPZ.length < 6) {
-      setSpzError("SPZ musí mít alespoň 6 znaků");
-      return;
-    }
 
     const carData = {
       SPZ: SPZ,
@@ -32,20 +25,17 @@ function AddCarForm({ onClose, onAddCarSuccess }) {
 
     try {
       const newCar = await createCar(carData);
-      setMessage("Auto bylo úspěšně zaregistrováno."); // Nastavíme zprávu
-      setShowMessage(true); // Zobrazíme zprávu
+      setMessage("Auto bylo úspěšně zaregistrováno.");
       setTimeout(() => {
-        setShowMessage(false); // Skryjeme zprávu po 3 sekundách
+        setMessage('');
         onAddCarSuccess(newCar);
-        onClose(); // Zavřeme modal
+        onClose();
       }, 3000);
     } catch (error) {
-      setMessage("Registrace selhala: " + error.message); // Zobrazíme chybovou zprávu
-      setShowMessage(true);
-      console.log(error)
+      setMessage( error.message);
       setTimeout(() => {
-        setShowMessage(false);
-      }, 2000);
+        setMessage('');
+      }, 3000);
     }
   };
 
@@ -57,14 +47,11 @@ function AddCarForm({ onClose, onAddCarSuccess }) {
         value={SPZ}
         onChange={(e) => {
           setSpz(e.target.value);
-          setSpzError("");
+          setMessage("");
         }}
         placeholder="SPZ"
         required
       />
-      {spzError && (
-        <div style={{ color: "red", textAlign: "center" }}>{spzError}</div>
-      )}
       <input
         type="text"
         style={inputStyle}
@@ -103,9 +90,7 @@ function AddCarForm({ onClose, onAddCarSuccess }) {
       <button style={formButtonStyle} onClick={onClose}>
         Zrušit
       </button>
-      {showMessage && (
-        <div style={{ color: "green", textAlign: "center" }}>{message}</div>
-      )}
+      {message && <div style={{ color: message.includes('úspěšně') ? 'green' : 'red' }}>{message}</div>}
     </form>
   );
 }

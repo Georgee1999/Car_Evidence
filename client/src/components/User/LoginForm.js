@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { formButtonStyle, inputStyle, registrationForm } from '../styles';
-import { loginUser } from '../api';
+import { formButtonStyle, inputStyle, registrationForm } from '../../styles/styles';
+import { loginUser } from '../../api/api';
 
 const LoginForm = ({ onClose, onLoginSuccess }) => {
   const [email, setEmail] = useState('');

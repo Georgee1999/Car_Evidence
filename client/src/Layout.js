@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { useNavigate, Outlet } from "react-router-dom";
-import RegistrationForm from "./User/RegistrationForm"; 
-import LoginForm from "./User/LoginForm";
-import NavBar from "./NavBar";
+import RegistrationForm from "./components/User/RegistrationForm";
+import LoginForm from "./components/User/LoginForm";
+import NavBar from "./components/NavBar";
+import { useUser } from "./context/UserContext";
 
 import {
   registrationPopup,
@@ -11,25 +12,21 @@ import {
   buttonStyle,
   bodyStyle,
   footerStyle,
-} from "./styles";
-
-
+} from "./styles/styles";
 
 const Layout = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [userName, setUserName] = useState(""); // Nový stav pro jméno uživatele
-  const [userId, setUserId] = useState(""); // Nový stav pro ID uživatele
+  //const [userName, setUserName] = useState(""); // Nový stav pro jméno uživatele
+  // const [userId, setUserId] = useState(""); // Nový stav pro ID uživatele
   const navigate = useNavigate();
-
+  const { user, setUser } = useUser();
 
   Modal.setAppElement("#root");
 
-
-
   const openModal = (content) => {
-    setModalContent(content)
+    setModalContent(content);
     setModalIsOpen(true);
   };
 
@@ -38,42 +35,57 @@ const Layout = () => {
   };
 
   const handleRegistrationSuccess = (name, id) => {
-    setIsLoggedIn(true);
-    setUserName(name); // Nastavení jména uživatele po úspěšné registraci
-    setUserId(id); // Nastavení ID uživatele po úspěšné registraci
+    //   setIsLoggedIn(true);
+    //  setUserName(name); // Nastavení jména uživatele po úspěšné registraci
+    //  setUserId(id); // Nastavení ID uživatele po úspěšné registraci
+    setUser({ name, id });
     navigate("/dashboard"); // Přesměrování na Dashboard po úspěšné registraci
     closeModal();
   };
   const handleLoginSuccess = (user) => {
-    setIsLoggedIn(true);
-    setUserName(`${user.firstName} ${user.lastName}`);
-    setUserId(user.id);
+    console.log("Login successful, user:", user);
+    //setIsLoggedIn(true);
+    setUser(user);
+    //setUserName(`${user.firstName} ${user.lastName}`);
+    //setUserId(user.id);
+    console.log("Setting userId to:", user.id);
     navigate("/dashboard");
     closeModal();
   };
 
   const onLogout = () => {
-    setIsLoggedIn(false);  // Nastaví isLoggedIn na false
-    setUserName(""); // Vyprázdnění jména uživatele po odhlášení
-    setUserId("");
-    navigate("/");         // Přesměrování na úvodní stránku
+    //setIsLoggedIn(false);  // Nastaví isLoggedIn na false
+    //setUserName(""); // Vyprázdnění jména uživatele po odhlášení
+    //setUserId("");
+    setUser(null);
+    navigate("/"); // Přesměrování na úvodní stránku
   };
-
 
   return (
     <>
-    <NavBar isLoggedIn={isLoggedIn} onLogout={onLogout} userName={userName} />
+      <NavBar
+        isLoggedIn={!!user}
+        onLogout={onLogout}
+        firstName={user?.firstName || ""}
+        lastName={user?.lastName || ""}
+      />
       <div style={mainContainerStyle}>
         <div style={bodyStyle}>
-          {!isLoggedIn ? (
+          {!user ? (
             <>
-              <button onClick={() => openModal("login")} style={buttonStyle}>Přihlásit se</button>
-              <button onClick={() => openModal("register")} style={buttonStyle}>Registrovat</button>
+              <button onClick={() => openModal("login")} style={buttonStyle}>
+                Přihlásit se
+              </button>
+              <button onClick={() => openModal("register")} style={buttonStyle}>
+                Registrovat
+              </button>
             </>
           ) : (
-            <div><Outlet context={[userId]} /></div>
+            <div>
+              <Outlet />
+            </div>
           )}
-           <Modal
+          <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             contentLabel="Modal"
@@ -99,6 +111,5 @@ const Layout = () => {
     </>
   );
 };
-
 
 export default Layout;

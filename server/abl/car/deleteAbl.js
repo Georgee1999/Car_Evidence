@@ -29,20 +29,19 @@ async function DeleteAbl(req, res) {
     const carList = carDao.list();
     const carExists = carList.some((c) => c.SPZ === reqParams.SPZ);
  
-    if(carExists){
-        carDao.remove(reqParams.SPZ);
-        res.status(200).json({
-            message:`Auto s SPZ: ${reqParams.SPZ} bylo odstraněno.`
-        });
-    }else{
-        res.json({
-            code: "carDoesNotExist",
-            message: `Auto s SPZ: ${reqParams.SPZ} neexistuje.`
-        })
+    if (carExists) {
+      carDao.remove(reqParams.SPZ);
+      res.status(200).json({
+        message: `Vozidlo s SPZ: ${reqParams.SPZ} bylo odstraněno.`
+      });
+    } else {
+      res.status(400).json({
+        code: "carDoesNotExist",
+        message: `Vozidlo s SPZ: ${reqParams.SPZ} neexistuje.`
+      });
     }
-
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(500).json({ message: e.message });
   }
 }

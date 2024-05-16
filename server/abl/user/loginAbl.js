@@ -1,5 +1,5 @@
 const Ajv = require("ajv");
-const addFormats = require("ajv-formats").default; 
+const addFormats = require("ajv-formats").default;
 const ajv = new Ajv();
 addFormats(ajv);
 
@@ -12,7 +12,10 @@ async function LoginAbl(req, res) {
     if (user) {
       res.status(200).json(user);
     } else {
-      res.status(404).json({ error: 'User not found' });
+      res.status(404).json({
+         code: "User not found",
+         message: `Uživatel s tímto e-mailem neexistuje!`,
+        });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { formButtonStyle, inputStyle, registrationForm } from "../styles";
-import { createUser } from "../api";
+import { formButtonStyle, inputStyle, registrationForm } from "../../styles/styles";
+import { createUser } from "../../api/api";
 
 function RegistrationForm({ onClose, onRegisterSuccess }) {
   const [email, setEmail] = useState("");
@@ -9,7 +9,6 @@ function RegistrationForm({ onClose, onRegisterSuccess }) {
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState(""); // Stav pro zprávu
-  const [showMessage, setShowMessage] = useState(false);
 
 
 
@@ -18,14 +17,13 @@ function RegistrationForm({ onClose, onRegisterSuccess }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (address.length < 4) {
-      setMessage("Adresa musí mít minimálně 4 znaky.");
-      setShowMessage(true);
-      setTimeout(() => {
-        setShowMessage(false);
-      }, 3000);
-      return;
-    }
+    // if (address.length < 4) {
+    //   setMessage("Adresa musí mít minimálně 4 znaky.");
+    //   setTimeout(() => {
+    //     setMessage('');
+    //   }, 3000);
+    //   return;
+    // }
 
     const userData = {
       email: email,
@@ -35,19 +33,17 @@ function RegistrationForm({ onClose, onRegisterSuccess }) {
     };
 
     try {
-     const user =  await createUser(userData); // Voláme API
+      const user = await createUser(userData); // Voláme API
       setMessage("Registrace byla úspěšná!"); // Nastavíme zprávu
-      setShowMessage(true); // Zobrazíme zprávu
       setTimeout(() => {
-        setShowMessage(false); // Skryjeme zprávu po 2 sekundách
+        setMessage(''); // Skryjeme zprávu po 2 sekundách
         onRegisterSuccess(`${firstName} ${lastName}`, user.id); // budeme předávat i user.id do Layoutu do handlesuccess
         onClose(); // Zavřeme modal
       }, 2000);
     } catch (error) {
-      setMessage("Registrace selhala: " + error.message); // Zobrazíme chybovou zprávu
-      setShowMessage(true);
+      setMessage(error.message); // Zobrazíme chybovou zprávu
       setTimeout(() => {
-        setShowMessage(false);
+        setMessage('');
       }, 3000);
     }
   };
@@ -95,9 +91,7 @@ function RegistrationForm({ onClose, onRegisterSuccess }) {
       <button style={formButtonStyle} onClick={onClose}>
         Zrušit
       </button>
-      {showMessage && (
-        <div style={{ color: "green", textAlign: "center" }}>{message}</div>
-      )}
+      {message && <div style={{ color: message.includes('úspěšná') ? 'green' : 'red' }}>{message}</div>}
     </form>
   );
 }

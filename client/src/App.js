@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Layout from "./Layout";
-import UserDashboard from "../src/User/UserDashboard";
+import UserDashboard from "./pages/Dashboard/UserDashboard";
+import { UserProvider } from "./context/UserContext";
 
 
 function App() {
   return (
-    <div>
+    <UserProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -16,7 +17,7 @@ function App() {
           <Route path="*" element={"Not Found"} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </UserProvider>
   );
 }
 

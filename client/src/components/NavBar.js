@@ -6,7 +6,8 @@ import Icon from "@mdi/react";
 import { mdiCar } from "@mdi/js";
 import Button from "react-bootstrap/esm/Button";
 
-function NavBar({ isLoggedIn, onLogout, userName }) {
+
+function NavBar({ isLoggedIn, onLogout, firstName, lastName }) {
   return (
     <Navbar expand="lg" style={componentStyle()}>
       <Container
@@ -23,7 +24,7 @@ function NavBar({ isLoggedIn, onLogout, userName }) {
         {isLoggedIn && (
           <>
             <span style={welcomeStyle()}>
-              Vítej {userName}
+              Vítej {firstName} {lastName}
             </span>
             <button onClick={onLogout} style={logoutButtonStyle()}>
               Odhlásit se

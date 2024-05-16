@@ -30,18 +30,21 @@ export async function createCar(carData) {
 }
 
 
-export async function getUserCars(userId){
+export async function getUserCars(userId) {
+  console.log("Calling getUserCars with userId:", userId);
   const response = await fetch(`http://localhost:8000/user/cars?id=${userId}`, {
     method: "GET",
-    headers: { "Content-Type": "application/json"}
+    headers: { "Content-Type": "application/json" }
   });
 
   if (!response.ok) {
     const errorResponse = await response.json();
+    console.error("Error response from API:", errorResponse);
     throw new Error(errorResponse.message || "Failed to find car");
   }
-  return await response.json();
-
+  const cars = await response.json();
+  console.log("Received cars:", cars);
+  return cars;
 }
 
 // api.js
