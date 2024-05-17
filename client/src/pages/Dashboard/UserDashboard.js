@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  buttonStyle,
   mainContainerStyle,
-  registrationPopup,
   bodyStyle,
   carContainerStyle,
-  carCardStyle,
-  carCardHoverStyle,
-  buttonContainerStyle,
-  buttonHoverStyle,
 } from "../../styles/styles";
-import AddCarForm from "../../components/Car/AddCarForm";
-import DeleteCarForm from "../../components/Car/DeleteCarForm";
+import ActionButtons from "../../components/ActionButtons";
+import Modals from "../../components/Modals";
+import CarCard from "../../components/Car/CarCard";
+
 import { useUser } from "../../context/UserContext";
-import { getUserCars } from "../../api/api";
-import Modal from "react-modal";
+import { getUserCars, getCarList, getCarsByEmail } from "../../api/api";
 
 export function UserDashboard() {
   const { user } = useUser();
@@ -22,16 +17,13 @@ export function UserDashboard() {
   const [userCars, setUserCars] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [emailModalIsOpen, setEmailModalIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [hoveredButton, setHoveredButton] = useState(null);
 
+
   const fetchUserCars = useCallback(async () => {
     try {
-      if (!userId) {
-        console.log("User ID is not defined");
-        return;
-      }
-      console.log("Fetching cars for user ID:", userId);
       const cars = await getUserCars(userId);
       const sortedCars = cars.sort((a, b) => b.yearOfMade - a.yearOfMade);
 
@@ -42,20 +34,49 @@ export function UserDashboard() {
     }
   }, [userId]);
 
+  const fetchAllCars = useCallback(async () => {
+    try {
+      const cars = await getCarList();
+      const sortedCars = cars.sort((a, b) => b.yearOfMade - a.yearOfMade);
+
+      console.log("Fetched all cars:", sortedCars);
+      setUserCars(sortedCars || []);
+    } catch (error) {
+      console.error("Error fetching all cars:", error);
+    }
+  }, []);
+
+ 
+
+  const fetchCarsByEmail = useCallback(async (email) => {
+    try {
+      const cars = await getCarsByEmail(email);
+      const sortedCars = cars.sort((a, b) => b.yearOfMade - a.yearOfMade);
+
+      console.log("Fetched cars by email:", sortedCars);
+      setUserCars(sortedCars || []);
+    } catch (error) {
+      console.error("Error fetching cars by email:", error);
+    }
+  }, []);
+
   useEffect(() => {
     if (userId) {
       fetchUserCars();
     }
   }, [fetchUserCars, userId]);
 
-  Modal.setAppElement("#root");
 
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   const openDeleteModal = () => setDeleteModalIsOpen(true);
   const closeDeleteModal = () => setDeleteModalIsOpen(false);
+  const openEmailModal = () => setEmailModalIsOpen(true);
+  const closeEmailModal = () => setEmailModalIsOpen(false);
 
-  const handleMyCarsClick = () => fetchUserCars();
+  //const handleMyCarsClick = () => fetchUserCars();
+  const handleAllCarsClick = () => fetchAllCars();
+  const handleEmailSubmit = (email) => fetchCarsByEmail(email);
 
   const handleAddCarSuccess = (newCar) => {
     setUserCars((prevCars) => {
@@ -73,90 +94,40 @@ export function UserDashboard() {
   return (
     <div style={mainContainerStyle}>
       <div style={bodyStyle}>
-        <div style={buttonContainerStyle}>
-          <button
-            style={{
-              ...buttonStyle,
-              ...(hoveredButton === "delete" ? buttonHoverStyle : {}),
-            }}
-            onMouseEnter={() => setHoveredButton("delete")}
-            onMouseLeave={() => setHoveredButton(null)}
-            onClick={openDeleteModal}
-          >
-            Smazat auto
-          </button>
-          <button
-            onClick={openModal}
-            style={{
-              ...buttonStyle,
-              ...(hoveredButton === "add" ? buttonHoverStyle : {}),
-            }}
-            onMouseEnter={() => setHoveredButton("add")}
-            onMouseLeave={() => setHoveredButton(null)}
-          >
-            Nové auto
-          </button>
-          <button
-            onClick={handleMyCarsClick}
-            style={{
-              ...buttonStyle,
-              ...(hoveredButton === "myCars" ? buttonHoverStyle : {}),
-            }}
-            onMouseEnter={() => setHoveredButton("myCars")}
-            onMouseLeave={() => setHoveredButton(null)}
-          >
-            Moje auta
-          </button>
-        </div>
+      <ActionButtons
+          openModal={openModal}
+          openDeleteModal={openDeleteModal}
+          handleAllCarsClick={handleAllCarsClick}
+          openEmailModal={openEmailModal}
+          hoveredButton={hoveredButton}
+          setHoveredButton={setHoveredButton}
+        />
         <div style={carContainerStyle}>
           {userCars && userCars.length > 0 ? (
             userCars.map((car, index) => (
-              <div
-                key={index}
-                style={{
-                  ...carCardStyle,
-                  ...(hoveredIndex === index ? carCardHoverStyle : {}),
-                }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(-1)}
-              >
-                <p>
-                  <strong>SPZ:</strong> {car.SPZ}
-                </p>
-                <p>
-                  <strong>Model:</strong> {car.model}
-                </p>
-                <p>
-                  <strong>Rok výroby:</strong> {car.yearOfMade}
-                </p>
-                <p>
-                  <strong>Barva:</strong> {car.color}
-                </p>
-                <p>
-                  <strong>Email:</strong> {car.email}
-                </p>
-              </div>
+              <CarCard
+              key={index}
+              car={car}
+              index={index}
+              hoveredIndex={hoveredIndex}
+              setHoveredIndex={setHoveredIndex}
+            />
             ))
           ) : (
             <p>Nemáš přiřazená žádná vozidla</p>
           )}
         </div>
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          contentLabel="Form"
-          style={registrationPopup}
-        >
-          <AddCarForm onClose={closeModal} onAddCarSuccess={handleAddCarSuccess} />
-        </Modal>
-        <Modal
-          isOpen={deleteModalIsOpen}
-          onRequestClose={closeDeleteModal}
-          contentLabel="Delete Car Form"
-          style={registrationPopup}
-        >
-          <DeleteCarForm onClose={closeDeleteModal} onDeleteCarSuccess={handleDeleteCarSuccess} />
-        </Modal>
+        <Modals
+          modalIsOpen={modalIsOpen}
+          closeModal={closeModal}
+          handleAddCarSuccess={handleAddCarSuccess}
+          deleteModalIsOpen={deleteModalIsOpen}
+          closeDeleteModal={closeDeleteModal}
+          handleDeleteCarSuccess={handleDeleteCarSuccess}
+          emailModalIsOpen={emailModalIsOpen}
+          closeEmailModal={closeEmailModal}
+          handleEmailSubmit={handleEmailSubmit}
+        />
       </div>
     </div>
   );

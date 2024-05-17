@@ -1,3 +1,4 @@
+// REGISTER USER
 export async function createUser(userData) {
   const response = await fetch("http://localhost:8000/user/create", {
     method: "POST",
@@ -13,6 +14,23 @@ export async function createUser(userData) {
   return await response.json();
 }
 
+// LOGIN USER
+export async function loginUser(email) {
+  const response = await fetch('http://localhost:8000/user/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email }), // wrap email in an object
+  });
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.message || 'Failed to login user');
+  }
+  return response.json();
+}
+
+// REGISTER CAR
 export async function createCar(carData) {
   const response = await fetch("http://localhost:8000/car/create", {
     method: "POST",
@@ -29,7 +47,22 @@ export async function createCar(carData) {
   return await response.json();
 }
 
+// GET ALL CARS
+export async function getCarList() {
+  const response = await fetch("http://localhost:8000/car/list", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
 
+  // zobrazení chybové zprávy z backendu
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.message || "Failed to fetch list");
+  }
+  return await response.json();
+}
+
+// GET CARS BY CURRENT USER ID
 export async function getUserCars(userId) {
   console.log("Calling getUserCars with userId:", userId);
   const response = await fetch(`http://localhost:8000/user/cars?id=${userId}`, {
@@ -47,7 +80,23 @@ export async function getUserCars(userId) {
   return cars;
 }
 
-// api.js
+// GET CARS BY E-MAIL
+export async function getCarsByEmail(email) {
+  const response = await fetch("http://localhost:8000/car/cars-by-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+
+  if (!response.ok) {
+    const errorResponse = await response.json();
+    throw new Error(errorResponse.message || "Failed to fetch cars by email");
+  }
+  return await response.json();
+}
+
+
+// DELETE CAR BY SPZ
 export async function deleteCarBySpz(spz) {
   const response = await fetch("http://localhost:8000/car/delete", {
     method: "DELETE",
@@ -63,17 +112,3 @@ export async function deleteCarBySpz(spz) {
   return response.json();
 };
 
-export async function loginUser(email) {
-  const response = await fetch('http://localhost:8000/user/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email }), // wrap email in an object
-  });
-  if (!response.ok) {
-    const errorResponse = await response.json();
-    throw new Error(errorResponse.message || 'Failed to login user');
-  }
-  return response.json();
-}
