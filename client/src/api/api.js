@@ -62,25 +62,6 @@ export async function getCarList() {
   return await response.json();
 }
 
-// GET CARS BY CURRENT USER ID
-export async function getUserCars(userId) {
-  console.log("Calling getUserCars with userId:", userId);
-  const response = await fetch(`http://localhost:8000/user/cars?id=${userId}`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" }
-  });
-
-  if (!response.ok) {
-    const errorResponse = await response.json();
-    console.error("Error response from API:", errorResponse);
-    throw new Error(errorResponse.message || "Failed to find car");
-  }
-  const cars = await response.json();
-  console.log("Received cars:", cars);
-  return cars;
-}
-
-// GET CARS BY E-MAIL
 export async function getCarsByEmail(email) {
   const response = await fetch("http://localhost:8000/car/cars-by-email", {
     method: "POST",
@@ -92,8 +73,20 @@ export async function getCarsByEmail(email) {
     const errorResponse = await response.json();
     throw new Error(errorResponse.message || "Failed to fetch cars by email");
   }
-  return await response.json();
+  const data = await response.json();
+  console.log("API response data:", data); // Log the API response
+
+  // Přidání kontroly pro vrácení prázdného pole, pokud data není pole
+  if (!Array.isArray(data)) {
+    console.error("API response is not an array:", data);
+    return []; // Vrať prázdné pole, pokud není data pole
+  }
+
+  return data;
 }
+
+
+
 
 
 // DELETE CAR BY SPZ

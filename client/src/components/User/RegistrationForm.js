@@ -17,13 +17,6 @@ function RegistrationForm({ onClose, onRegisterSuccess }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // if (address.length < 4) {
-    //   setMessage("Adresa musí mít minimálně 4 znaky.");
-    //   setTimeout(() => {
-    //     setMessage('');
-    //   }, 3000);
-    //   return;
-    // }
 
     const userData = {
       email: email,

@@ -1,22 +1,47 @@
 import React, { useState } from "react";
-import { formButtonStyle, inputStyle, registrationForm } from "../../styles/styles";
+import {
+  formButtonStyle,
+  inputStyle,
+  registrationForm,
+} from "../../styles/styles";
 
-const EmailForm = ({ onClose, onEmailSubmit }) => {
+const FindCarsByEmailForm = ({ onClose, onEmailSubmit }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!email) {
-      setMessage("Prosím zadejte e-mailovou adresu.");
+
+    try {
+      const cars = await onEmailSubmit(email);
+      console.log("Cars fetched in handleSubmit:", cars);
+
+      if (!cars) {
+        console.error("Cars is undefined");
+        throw new Error("Received undefined response from onEmailSubmit");
+      }
+
+      if (!Array.isArray(cars)) {
+        console.error("Cars is not an array:", cars);
+        throw new Error("Unexpected response format, expected an array");
+      }
+
+      console.log("Cars length:", cars.length);
+
+      if (cars.length === 0) {
+        setMessage("Auta nenalezena.");
+      } else {
+        setMessage("");
+        onClose();
+      }
+    } catch (error) {
+      console.error("Error in handleSubmit:", error);
+      setMessage(error.message);
       setTimeout(() => {
         setMessage("");
       }, 3000);
-      return;
+      // Modal zůstane otevřený, aby zobrazil chybovou zprávu
     }
-    onEmailSubmit(email);
-    setEmail("");
-    onClose();
   };
 
   return (
@@ -35,9 +60,13 @@ const EmailForm = ({ onClose, onEmailSubmit }) => {
       <button type="button" onClick={onClose} style={formButtonStyle}>
         Zrušit
       </button>
-      {message && <div style={{ color: "red" }}>{message}</div>}
+      {message && (
+        <div style={{ color: message.includes("nalezena") ? "green" : "red" }}>
+          {message}
+        </div>
+      )}
     </form>
   );
 };
 
-export default EmailForm;
+export default FindCarsByEmailForm;

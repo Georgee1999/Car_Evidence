@@ -1,14 +1,30 @@
 import React from "react";
-import { buttonStyle, buttonHoverStyle, buttonContainerStyle } from "../styles/styles";
+import {
+  buttonContainerStyle,
+  buttonStyle,
+  buttonHoverStyle,
+} from "../styles/styles";
 
-const ActionButtons = ({ openModal, openDeleteModal, handleAllCarsClick, openEmailModal , hoveredButton, setHoveredButton }) => {
+const ActionButtons = ({
+  openModal,
+  openDeleteModal,
+  handleAllCarsClick,
+  openEmailModal,
+  hoveredButton,
+  setHoveredButton,
+}) => {
   return (
     <div style={buttonContainerStyle}>
       <button
-        style={{
-          ...buttonStyle,
-          ...(hoveredButton === "delete" ? buttonHoverStyle : {}),
-        }}
+        style={hoveredButton === "new" ? buttonHoverStyle : buttonStyle}
+        onMouseEnter={() => setHoveredButton("new")}
+        onMouseLeave={() => setHoveredButton(null)}
+        onClick={openModal}
+      >
+        Nové auto
+      </button>
+      <button
+        style={hoveredButton === "delete" ? buttonHoverStyle : buttonStyle}
         onMouseEnter={() => setHoveredButton("delete")}
         onMouseLeave={() => setHoveredButton(null)}
         onClick={openDeleteModal}
@@ -16,35 +32,18 @@ const ActionButtons = ({ openModal, openDeleteModal, handleAllCarsClick, openEma
         Smazat auto
       </button>
       <button
-        onClick={openModal}
-        style={{
-          ...buttonStyle,
-          ...(hoveredButton === "add" ? buttonHoverStyle : {}),
-        }}
-        onMouseEnter={() => setHoveredButton("add")}
+        style={hoveredButton === "all" ? buttonHoverStyle : buttonStyle}
+        onMouseEnter={() => setHoveredButton("all")}
         onMouseLeave={() => setHoveredButton(null)}
-      >
-        Nové auto
-      </button>
-      <button
         onClick={handleAllCarsClick}
-        style={{
-          ...buttonStyle,
-          ...(hoveredButton === "myCars" ? buttonHoverStyle : {}),
-        }}
-        onMouseEnter={() => setHoveredButton("myCars")}
-        onMouseLeave={() => setHoveredButton(null)}
       >
         Registrovaná auta
       </button>
       <button
-        onClick={openEmailModal}
-        style={{
-          ...buttonStyle,
-          ...(hoveredButton === "carsByEmail" ? buttonHoverStyle : {}),
-        }}
-        onMouseEnter={() => setHoveredButton("carsByEmail")}
+        style={hoveredButton === "email" ? buttonHoverStyle : buttonStyle}
+        onMouseEnter={() => setHoveredButton("email")}
         onMouseLeave={() => setHoveredButton(null)}
+        onClick={openEmailModal}
       >
         Vyhledat auta
       </button>

@@ -1,36 +1,23 @@
-const Ajv = require("ajv");
-const addFormats = require("ajv-formats").default;
-const ajv = new Ajv();
-addFormats(ajv);
-
-const carDao = require("../../dao/car-dao.js");
-
-const schema = {
-  type: "object",
-  properties: {
-    email: { type: "string", format: "email" }
-  },
-  required: ["email"],
-  additionalProperties: false
-};
+const carDao = require("../../dao/car-dao");
+const userDao = require("../../dao/user-dao");
 
 async function GetCarsByEmailAbl(req, res) {
   try {
-    const valid = ajv.validate(schema, req.body);
-    if (!valid) {
-      return res.status(400).json({
-        code: "validationError",
-        message: ajv.errors
+    const { email } = req.body;
+    const user = await userDao.getUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({
+        code: "userNotFound",
+        message: "Uživatel s tímto e-mailem neexistuje.",
       });
     }
 
-    const { email } = req.body;
-    const cars = carDao.getCarsByEmail(email);
-
-    if (cars.length === 0) {
-      return res.status(404).json({
-        code: "carsNotFound",
-        message: `Žádná auta pro e-mail: ${email} nebyla nalezena.`
+    const cars = await carDao.getCarsByEmail(email);
+    if (!Array.isArray(cars)) {
+      console.error("Cars from DAO is not an array:", cars);
+      return res.status(500).json({
+        code: "internalError",
+        message: "Expected an array of cars from DAO",
       });
     }
 

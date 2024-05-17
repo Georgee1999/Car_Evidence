@@ -14,23 +14,33 @@ export const bodyStyle = {
 };
 export const buttonContainerStyle = {
   display: "flex",
-  justifyContent: "center",
-  marginBottom: "20px",
+  justifyContent: "space-around",
+  margin: "20px 0",
+  gap: "10px",  // Přidání odstupu mezi tlačítky
 };
 export const buttonStyle = {
-  backgroundColor: "#6c757d",
-  color: "white",
-  padding: "10px 20px",
-  margin: "5px",
+  backgroundColor: "#2C3E50",
+  backgroundImage: "linear-gradient(45deg, #2C3E50, #34495E)",
   border: "none",
-  borderRadius: "5px",
-  cursor: "pointer",
+  color: "white",
+  padding: "15px 32px",
+  textAlign: "center",
+  textDecoration: "none",
+  display: "inline-block",
   fontSize: "16px",
-  transition: "background-color 0.3s ease-in-out",
+  margin: "4px 2px",
+  cursor: "pointer",
+  borderRadius: "8px",
+  transition: "background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Přidání jemného stínu
 };
 
 export const buttonHoverStyle = {
-  backgroundColor: "#5a6268",
+  ...buttonStyle,
+  backgroundColor: "#1A252F",
+  backgroundImage: "linear-gradient(45deg, #1A252F, #2C3E50)",
+  boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
+  transform: "scale(1.05)",
 };
 
 

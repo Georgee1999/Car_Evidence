@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   mainContainerStyle,
   bodyStyle,
@@ -7,13 +7,11 @@ import {
 import ActionButtons from "../../components/ActionButtons";
 import Modals from "../../components/Modals";
 import CarCard from "../../components/Car/CarCard";
-
 import { useUser } from "../../context/UserContext";
-import { getUserCars, getCarList, getCarsByEmail } from "../../api/api";
+import { getCarList, getCarsByEmail } from "../../api/api";
 
 export function UserDashboard() {
   const { user } = useUser();
-  const userId = user?.id || "";
   const [userCars, setUserCars] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -21,24 +19,10 @@ export function UserDashboard() {
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [hoveredButton, setHoveredButton] = useState(null);
 
-
-  const fetchUserCars = useCallback(async () => {
-    try {
-      const cars = await getUserCars(userId);
-      const sortedCars = cars.sort((a, b) => b.yearOfMade - a.yearOfMade);
-
-      console.log("Fetched cars:", sortedCars);
-      setUserCars(sortedCars || []);
-    } catch (error) {
-      console.error("Error fetching user cars:", error);
-    }
-  }, [userId]);
-
   const fetchAllCars = useCallback(async () => {
     try {
       const cars = await getCarList();
       const sortedCars = cars.sort((a, b) => b.yearOfMade - a.yearOfMade);
-
       console.log("Fetched all cars:", sortedCars);
       setUserCars(sortedCars || []);
     } catch (error) {
@@ -46,26 +30,32 @@ export function UserDashboard() {
     }
   }, []);
 
- 
-
   const fetchCarsByEmail = useCallback(async (email) => {
     try {
       const cars = await getCarsByEmail(email);
-      const sortedCars = cars.sort((a, b) => b.yearOfMade - a.yearOfMade);
-
-      console.log("Fetched cars by email:", sortedCars);
-      setUserCars(sortedCars || []);
+      console.log("Fetched cars by email in fetchCarsByEmail:", cars);
+      if (!cars) {
+        console.error("Cars is undefined in fetchCarsByEmail");
+        throw new Error("Received undefined response from getCarsByEmail");
+      }
+      if (!Array.isArray(cars)) {
+        console.error("Cars is not an array in fetchCarsByEmail:", cars);
+        throw new Error("Unexpected response format, expected an array");
+      }
+      setUserCars(cars);
+      return cars;
     } catch (error) {
       console.error("Error fetching cars by email:", error);
+      throw error;
     }
   }, []);
 
   useEffect(() => {
-    if (userId) {
-      fetchUserCars();
+    if (user) {
+      console.log("User exists, fetching all cars...");
+      fetchAllCars();
     }
-  }, [fetchUserCars, userId]);
-
+  }, [user, fetchAllCars]);
 
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
@@ -74,7 +64,6 @@ export function UserDashboard() {
   const openEmailModal = () => setEmailModalIsOpen(true);
   const closeEmailModal = () => setEmailModalIsOpen(false);
 
-  //const handleMyCarsClick = () => fetchUserCars();
   const handleAllCarsClick = () => fetchAllCars();
   const handleEmailSubmit = (email) => fetchCarsByEmail(email);
 
@@ -94,7 +83,7 @@ export function UserDashboard() {
   return (
     <div style={mainContainerStyle}>
       <div style={bodyStyle}>
-      <ActionButtons
+        <ActionButtons
           openModal={openModal}
           openDeleteModal={openDeleteModal}
           handleAllCarsClick={handleAllCarsClick}
@@ -106,12 +95,12 @@ export function UserDashboard() {
           {userCars && userCars.length > 0 ? (
             userCars.map((car, index) => (
               <CarCard
-              key={index}
-              car={car}
-              index={index}
-              hoveredIndex={hoveredIndex}
-              setHoveredIndex={setHoveredIndex}
-            />
+                key={index}
+                car={car}
+                index={index}
+                hoveredIndex={hoveredIndex}
+                setHoveredIndex={setHoveredIndex}
+              />
             ))
           ) : (
             <p>Nemáš přiřazená žádná vozidla</p>

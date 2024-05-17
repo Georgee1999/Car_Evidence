@@ -29,9 +29,6 @@ function create(user) {
   }
 
  
- 
-
-
   function getUserByEmail(email) {
     try {
       const files = fs.readdirSync(userFolderPath);
@@ -48,6 +45,9 @@ function create(user) {
       throw { code: "failedToReadUser", message: error.message };
     }
   }
+
+
+
 
   // Method to list users in a folder
 function list() {

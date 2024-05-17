@@ -18,7 +18,21 @@ function create(car) {
     }
   }
 
- 
+ // Metoda pro získání aut podle emailu
+function getCarsByEmail(email) {
+  try {
+    const files = fs.readdirSync(carFolderPath);
+    const cars = files.map((file) => {
+      const fileData = fs.readFileSync(path.join(carFolderPath, file), "utf8");
+      return JSON.parse(fileData);
+    });
+    return cars.filter((car) => car.email === email);
+  } catch (error) {
+    throw { code: "failedToListCars", message: error.message };
+  }
+}
+
+
   // Method to list users in a folder
 function list() {
   try {
@@ -33,18 +47,7 @@ function list() {
   }
 }
 
-function getCarsByEmail(email) {
-  try {
-    const files = fs.readdirSync(carFolderPath);
-    const cars = files.map((file) => {
-      const fileData = fs.readFileSync(path.join(carFolderPath, file), "utf8");
-      return JSON.parse(fileData);
-    }).filter((car) => car.email === email);
-    return cars;
-  } catch (error) {
-    throw { code: "failedToGetCarsByEmail", message: error.message };
-  }
-}
+
 
 function remove(car) {
   try {

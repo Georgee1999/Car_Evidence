@@ -17,7 +17,7 @@ const LoginForm = ({ onClose, onLoginSuccess }) => {
         onClose();
       }, 1000);
     } catch (error) {
-      setMessage( error.message);
+      setMessage(error.message);
       setTimeout(() => {
         setMessage('');
       }, 3000);
@@ -26,14 +26,14 @@ const LoginForm = ({ onClose, onLoginSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit} style={registrationForm}>
-        <input
-          style={inputStyle}
-          placeholder='E-mail'
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+      <input
+        style={inputStyle}
+        placeholder='E-mail'
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
       <button style={formButtonStyle} type="submit">
         Přihlásit se
       </button>
