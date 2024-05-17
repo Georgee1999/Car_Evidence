@@ -33,6 +33,19 @@ function list() {
   }
 }
 
+function getCarsByEmail(email) {
+  try {
+    const files = fs.readdirSync(carFolderPath);
+    const cars = files.map((file) => {
+      const fileData = fs.readFileSync(path.join(carFolderPath, file), "utf8");
+      return JSON.parse(fileData);
+    }).filter((car) => car.email === email);
+    return cars;
+  } catch (error) {
+    throw { code: "failedToGetCarsByEmail", message: error.message };
+  }
+}
+
 function remove(car) {
   try {
     const filePath = path.join(carFolderPath, `${car}.json`);
@@ -50,5 +63,6 @@ function remove(car) {
   module.exports = {
     create,
     list,
-    remove
+    remove,
+    getCarsByEmail
   }

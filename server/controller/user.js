@@ -9,10 +9,12 @@ const LoginAbl = require("../abl/user/loginAbl");
 
 
 
+
 router.post("/create", CreateAbl);
 router.get("/list", ListAbl);
 router.get("/cars", getUserCars);
-router.post("/login", LoginAbl); // Přidání nového endpointu
+router.post("/login", LoginAbl); 
+
 
 
 module.exports = router;

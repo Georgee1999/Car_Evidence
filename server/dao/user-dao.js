@@ -16,7 +16,7 @@ function create(user) {
       throw { code: "failedToCreateUser", message: error.message };
     }
   }
-
+// By Current ID
   function getUserCars(userId){
     try {
       const filePath = path.join(userFolderPath, `${userId}.json`);
@@ -27,6 +27,10 @@ function create(user) {
       throw { code: "failedToReadUser", message: error.message };
     }
   }
+
+ 
+ 
+
 
   function getUserByEmail(email) {
     try {
@@ -65,7 +69,7 @@ function list() {
     create,
     list,
     getUserCars,
-    getUserByEmail
+    getUserByEmail,
   };
 
 

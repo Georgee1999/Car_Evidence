@@ -64,8 +64,8 @@ async function CreateAbl(req, res) {
       });
       return;
     }
+    
 
-    car = carDao.create(car);
     res.status(201).json(car);
   } catch (e) {
     res.status(500).json({ message: e.message });
