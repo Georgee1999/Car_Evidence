@@ -24,7 +24,7 @@ function NavBar({ isLoggedIn, onLogout, firstName, lastName }) {
         {isLoggedIn && (
           <>
             <span style={welcomeStyle()}>
-              Vítej {firstName} {lastName}
+               {firstName} {lastName}
             </span>
             <button onClick={onLogout} style={logoutButtonStyle()}>
               Odhlásit se
@@ -46,7 +46,7 @@ function textStyle() {
 
 function buttonStyle() {
   return {
-    backgroundColor: "#343a40", // A dark gray color
+    backgroundColor: "#000000", // A dark gray color
     borderRadius: "10px",
     border: "none", // Removes default border
     display: "flex",
@@ -61,17 +61,17 @@ function buttonStyle() {
 
 function welcomeStyle() {
   return {
-    color: "#f0ad4e",
+    color: "#ffffff",
     marginRight: "20px",
     marginTop:"7px",
-    fontSize: "18px",
+    fontSize: "24px",
     fontWeight: "bold",
     textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
   };
 }
 function componentStyle() {
   return {
-    backgroundColor: "#696969", //backround of navbar
+    backgroundColor: "#2c3e50", //backround of navbar
     padding: "10px 0",
     marginBottom: "4px",
   };

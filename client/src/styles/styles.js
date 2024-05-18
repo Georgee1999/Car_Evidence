@@ -122,7 +122,7 @@ export const carCardHoverStyle = {
 // FOOTER
 export const footerStyle = {
   textAlign: "center",
-  backgroundColor: "#696969",
+  backgroundColor: "#2c3e50",
   color: "white",
   width: "100%",
   padding: "8px 0",
