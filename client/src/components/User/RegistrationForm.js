@@ -30,7 +30,7 @@ function RegistrationForm({ onClose, onRegisterSuccess }) {
       setMessage("Registrace byla úspěšná!"); // Nastavíme zprávu
       setTimeout(() => {
         setMessage(''); // Skryjeme zprávu po 2 sekundách
-        onRegisterSuccess(`${firstName} ${lastName}`, user.id); // budeme předávat i user.id do Layoutu do handlesuccess
+        onRegisterSuccess(user); // budeme předávat i user.id do Layoutu do handlesuccess
         onClose(); // Zavřeme modal
       }, 2000);
     } catch (error) {

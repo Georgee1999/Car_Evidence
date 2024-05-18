@@ -32,8 +32,9 @@ const Layout = () => {
     setModalIsOpen(false);
   };
 
-  const handleRegistrationSuccess = (name, id) => {
-    setUser({ name, id });
+  const handleRegistrationSuccess = (user) => {
+    console.log("Register successful, user:", user);
+    setUser(user);
     navigate("/dashboard"); // Přesměrování na Dashboard po úspěšné registraci
     closeModal();
   };
