@@ -26,7 +26,7 @@ export function UserDashboard() {
   useEffect(() => {
     if (user) {
       console.log("User exists, fetching all cars...");
-      fetchAllCars();
+      fetchAllCars().then(setUserCars);
     }
   }, [user, fetchAllCars]);
 
@@ -37,8 +37,21 @@ export function UserDashboard() {
   const openEmailModal = () => setEmailModalIsOpen(true);
   const closeEmailModal = () => setEmailModalIsOpen(false);
 
-  const handleAllCarsClick = () => fetchAllCars();
-  const handleEmailSubmit = (email) => fetchCarsByEmail(email);
+  const handleAllCarsClick = async () => {
+    const cars = await fetchAllCars();
+    setUserCars(cars);
+  };  
+  
+  const handleEmailSubmit = async (email) => {
+    try {
+      const cars = await fetchCarsByEmail(email);
+      setUserCars(cars);
+      return cars;
+    } catch (error) {
+      console.error("Error fetching cars by email:", error);
+      return [];
+    }
+  };
 
   const handleAddCarSuccess = (newCar) => {
     setUserCars((prevCars) => {

@@ -62,6 +62,7 @@ export async function getCarList() {
   return await response.json();
 }
 
+// GET CARS BY E-MAIl
 export async function getCarsByEmail(email) {
   const response = await fetch("http://localhost:8000/car/cars-by-email", {
     method: "POST",

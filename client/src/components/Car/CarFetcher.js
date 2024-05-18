@@ -2,6 +2,8 @@ import { useCallback } from "react";
 import { getCarList, getCarsByEmail } from "../../api/api";
 
 export const useCarFetcher = () => {
+
+
   const fetchAllCars = useCallback(async () => {
     try {
       const cars = await getCarList();
@@ -14,6 +16,8 @@ export const useCarFetcher = () => {
     }
   }, []);
 
+
+  
   const fetchCarsByEmail = useCallback(async (email) => {
     try {
       const cars = await getCarsByEmail(email);
