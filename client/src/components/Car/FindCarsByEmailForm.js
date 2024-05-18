@@ -11,36 +11,16 @@ const FindCarsByEmailForm = ({ onClose, onEmailSubmit }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      const cars = await onEmailSubmit(email);
-      console.log("Cars fetched in handleSubmit:", cars);
-
-      if (!cars) {
-        console.error("Cars is undefined");
-        throw new Error("Received undefined response from onEmailSubmit");
-      }
-
-      if (!Array.isArray(cars)) {
-        console.error("Cars is not an array:", cars);
-        throw new Error("Unexpected response format, expected an array");
-      }
-
-      console.log("Cars length:", cars.length);
-
-      if (cars.length === 0) {
-        setMessage("Auta nenalezena.");
-      } else {
-        setMessage("");
+       await onEmailSubmit(email);
+      setMessage('Auta nalezena');
+        setMessage('');
         onClose();
-      }
     } catch (error) {
-      console.error("Error in handleSubmit:", error);
       setMessage(error.message);
       setTimeout(() => {
-        setMessage("");
+        setMessage('');
       }, 3000);
-      // Modal zůstane otevřený, aby zobrazil chybovou zprávu
     }
   };
 
@@ -60,11 +40,7 @@ const FindCarsByEmailForm = ({ onClose, onEmailSubmit }) => {
       <button type="button" onClick={onClose} style={formButtonStyle}>
         Zrušit
       </button>
-      {message && (
-        <div style={{ color: message.includes("nalezena") ? "green" : "red" }}>
-          {message}
-        </div>
-      )}
+      {message && <div style={{ color: message.includes('nalezena') ? 'green' : 'red' }}>{message}</div>}
     </form>
   );
 };

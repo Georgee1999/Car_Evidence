@@ -34,10 +34,22 @@ async function CreateAbl(req, res) {
         message: `Vozidlo s SPZ ${car.SPZ} již existuje.`,
       });
       return;
+    } else if (car.SPZ.length < 6 || car.SPZ.length > 8) {
+      res.status(400).json({
+        code: "badColorInput",
+        message: `SPZ musí obsahovat 6 - 8 znaků!`,
+      });
+      return;
     } else if (car.model.length < 3) {
       res.status(400).json({
         code: "badColorInput",
         message: `Model musí obsahovat minimálně 3 znaky!`,
+      });
+      return;
+    } else if (car.yearOfMade.length != 4) {
+      res.status(400).json({
+        code: "badColorInput",
+        message: `Rok výroby musí obsahovat 4 znaky!`,
       });
       return;
     } else if (car.color.length < 3) {
@@ -64,7 +76,7 @@ async function CreateAbl(req, res) {
       });
       return;
     }
-    
+
     carDao.create(car); // Přidáme auto do databáze
     res.status(201).json(car);
   } catch (e) {

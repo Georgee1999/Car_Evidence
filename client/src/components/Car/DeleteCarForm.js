@@ -10,13 +10,6 @@ function DeleteCarForm({ onClose, onDeleteCarSuccess }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (SPZ.length < 6) {
-      setMessage("SPZ musí mít alespoň 6 znaků");
-      setTimeout(() => {
-        setMessage('');
-      }, 3000);
-      return;
-    }
 
     try {
        await deleteCarBySpz(SPZ);

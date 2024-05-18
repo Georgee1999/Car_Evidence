@@ -77,11 +77,7 @@ export async function getCarsByEmail(email) {
   const data = await response.json();
   console.log("API response data:", data); // Log the API response
 
-  // Přidání kontroly pro vrácení prázdného pole, pokud data není pole
-  if (!Array.isArray(data)) {
-    console.error("API response is not an array:", data);
-    return []; // Vrať prázdné pole, pokud není data pole
-  }
+
 
   return data;
 }

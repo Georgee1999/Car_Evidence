@@ -49,7 +49,7 @@ export function UserDashboard() {
       return cars;
     } catch (error) {
       console.error("Error fetching cars by email:", error);
-      return [];
+      throw error;
     }
   };
 
