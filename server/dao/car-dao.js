@@ -4,8 +4,6 @@ const crypto = require("crypto");
 
 const carFolderPath = path.join(__dirname, "storage", "carList");
 
-
-
 // Method to write an car to a file
 function create(car) {
     try {
